@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import UserRoutes from "./routes/User.js";
 import FoodRoutes from "./routes/Food.js";
 dotenv.config();
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 app.use(cors());
@@ -31,10 +32,11 @@ app.get("/", async (req, res) => {
   });
 });
 
+const MONGO_URI = process.env.MONGO_URI;
 const connectDB = () => {
   mongoose.set("strictQuery", true);
   mongoose
-    .connect("mongodb://localhost:27017/Products") 
+    .connect(MONGO_URI) 
     .then(() => console.log("Connected to MongoDB"))
     .catch((err) => {
       console.error("Failed to connect with MongoDB");
@@ -46,7 +48,7 @@ const connectDB = () => {
 const startServer = async () => {
   try {
     connectDB();
-    app.listen(8080, () => console.log("Server started on port 8080"));
+    app.listen(PORT, () => console.log("Server started on port 8080"));
   } catch (error) {
     console.log(error);
   }
